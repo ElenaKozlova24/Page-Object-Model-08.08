@@ -12,7 +12,7 @@ public class WebDriverFactory {
     public static WebDriver createNewDriver(String webDriverName, Object... options) {
         switch (webDriverName.toLowerCase()) {
             case "chrome":
-                WebDriverManager.chromedriver().setup();
+                WebDriverManager.chromedriver().driverVersion("126.0.6478.126").setup();
                 if (options.length > 0 && options[0] instanceof ChromeOptions) {
                     return new ChromeDriver((ChromeOptions) options[0]);
                 } else {
