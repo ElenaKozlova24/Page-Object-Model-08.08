@@ -40,7 +40,7 @@ public class PersonalInfoPage {
             saveAndContinue();
         } catch (Exception e) {
             e.printStackTrace();
-            // Обработка исключений по необходимости
+
         }
     }
 
@@ -98,7 +98,6 @@ public class PersonalInfoPage {
         WebElement telegramElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(String.format(socialNetLocatorTemplate, "telegram"))));
         telegramElement.click();
 
-        // Локатор для поля ввода контакта
         String fieldSelectorTemplate = "input#id_contact-%d-value";
         WebElement telegramInputElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(String.format(fieldSelectorTemplate, 0))));
         telegramInputElement.click();

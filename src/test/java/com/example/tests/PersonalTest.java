@@ -9,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
@@ -36,7 +34,6 @@ public class PersonalTest {
             verifyPersonalInfo();
         } catch (Exception e) {
             e.printStackTrace();
-            // Обработка исключений по необходимости
         }
     }
 
@@ -64,7 +61,7 @@ public class PersonalTest {
     @AfterEach
     public void tearDown() {
         if (driver != null) {
-            driver.quit();
+         driver.quit();
         }
     }
 
