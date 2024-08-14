@@ -8,8 +8,6 @@ public class ChromeSettings implements IChromeOptions {
     public MutableCapabilities settings() {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--start-maximized");
-        chromeOptions.addArguments("--disable-notifications");
-        chromeOptions.addArguments("--incognito");
         return chromeOptions;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.otus.page;
 
 import factory.WebDriverFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class LoginPage {
+    private static final Logger logger = LogManager.getLogger(LoginPage.class);
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -20,6 +23,7 @@ public class LoginPage {
     private static final By PASSWORD_ELEMENT = By.cssSelector(".sc-11ptd2v-1-Component");
     private static final By PASSWORD_INPUT = By.cssSelector("input[type='password']");
     private static final By LOGIN_SUBMIT_BUTTON = By.cssSelector("button.eQlGvH");
+    private static final By LOGGED_IN_INDICATOR = By.cssSelector("div.logged-in-indicator"); // Пример локатора для проверки входа
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -66,29 +70,17 @@ public class LoginPage {
             enterPassword(password);
             clickLoginSubmitButton();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Login failed", e);
             throw new RuntimeException("Login failed: " + e.getMessage());
         }
     }
 
-    public static void main(String[] args) {
-        WebDriver driver = WebDriverFactory.createNewDriver("chrome");
-
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.open();
-
-        String email = System.getenv("OTUS_EMAIL");
-        String password = System.getenv("OTUS_PASSWORD");
-
-        if (email == null || password == null) {
-            System.err.println("Environment variables OTUS_EMAIL and OTUS_PASSWORD must be set.");
-            driver.quit();
-            return;
+    public boolean isLoggedIn() {
+        try {
+            WebElement loggedInIndicator = wait.until(ExpectedConditions.visibilityOfElementLocated(LOGGED_IN_INDICATOR));
+            return loggedInIndicator.isDisplayed();
+        } catch (Exception e) {
+            return false;
         }
-
-        loginPage.login(email, password);
-
-        driver.quit();
     }
 }

@@ -4,22 +4,41 @@ import com.example.otus.page.LoginPage;
 import com.example.otus.page.PersonalAccountPage;
 import com.example.otus.page.PersonalInfoPage;
 import factory.WebDriverFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebDriver;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class PersonalTest {
 
+    private static final Logger logger = LogManager.getLogger(PersonalTest.class);
     private WebDriver driver;
+    private Properties properties;
 
     @BeforeEach
     public void setUp() {
         driver = WebDriverFactory.createNewDriver("chrome");
+        properties = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+            if (input == null) {
+                logger.error("Unable to find config.properties");
+                return;
+            }
+            properties.load(input);
+        } catch (IOException ex) {
+            logger.error("Error loading properties file", ex);
+        }
     }
 
     @ParameterizedTest
@@ -33,7 +52,7 @@ public class PersonalTest {
             navigateToPersonalInfo();
             verifyPersonalInfo();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error during test execution", e);
         }
     }
 
@@ -41,33 +60,49 @@ public class PersonalTest {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.login(email, password);
+        assertTrue(loginPage.isLoggedIn(), "Login failed");
     }
 
     private void navigateToPersonalInfo() {
         PersonalAccountPage personalAccountPage = new PersonalAccountPage(driver);
         personalAccountPage.goToPersonalInfo();
+        assertTrue(personalAccountPage.isOnPersonalInfoPage(), "Navigation to personal info page failed");
     }
 
     private void fillPersonalInfo() {
         PersonalInfoPage personalInfoPage = new PersonalInfoPage(driver);
         personalInfoPage.fillPersonalInfo();
+        assertTrue(personalInfoPage.isPersonalInfoFilled(), "Filling personal info failed");
     }
 
     private void verifyPersonalInfo() {
         PersonalInfoPage personalInfoPage = new PersonalInfoPage(driver);
-        personalInfoPage.verifyPersonalInfo();
+        assertTrue(personalInfoPage.isPersonalInfoCorrect(), "Personal info verification failed");
     }
 
     @AfterEach
     public void tearDown() {
         if (driver != null) {
-         driver.quit();
+            driver.quit();
         }
     }
 
     private static Stream<Arguments> provideCredentials() {
+        Properties properties = new Properties();
+        try (InputStream input = PersonalTest.class.getClassLoader().getResourceAsStream("config.properties")) {
+            if (input == null) {
+                logger.error("Unable to find config.properties");
+                return Stream.empty();
+            }
+            properties.load(input);
+        } catch (IOException ex) {
+            logger.error("Error loading properties file", ex);
+            return Stream.empty();
+        }
+        String email = properties.getProperty("email");
+        String password = properties.getProperty("password");
         return Stream.of(
-                Arguments.of("4688104@mail.ru", "Kozlova23.")
+                Arguments.of(email, password)
         );
     }
 }

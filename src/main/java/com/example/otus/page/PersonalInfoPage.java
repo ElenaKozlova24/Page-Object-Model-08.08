@@ -1,6 +1,8 @@
 package com.example.otus.page;
 
 import factory.WebDriverFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.Assertions;
 import java.time.Duration;
 
 public class PersonalInfoPage {
+    private static final Logger logger = LogManager.getLogger(PersonalInfoPage.class);
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -39,8 +42,8 @@ public class PersonalInfoPage {
             uploadPhoto();
             saveAndContinue();
         } catch (Exception e) {
-            e.printStackTrace();
-
+            logger.error("Error filling personal info", e);
+            throw new RuntimeException("Error filling personal info: " + e.getMessage());
         }
     }
 
@@ -182,15 +185,51 @@ public class PersonalInfoPage {
         return input.getAttribute("value");
     }
 
-    public static void main(String[] args) {
-        WebDriver driver = WebDriverFactory.createNewDriver("chrome");
+    public boolean isPersonalInfoFilled() {
+        try {
+            // Проверка заполненности основных полей
+            Assertions.assertNotNull(getInputValue("input[name='fname']"));
+            Assertions.assertNotNull(getInputValue("input[name='fname_latin']"));
+            Assertions.assertNotNull(getInputValue("input[name='lname']"));
+            Assertions.assertNotNull(getInputValue("input[name='lname_latin']"));
+            Assertions.assertNotNull(getInputValue("input[name='blog_name']"));
+            Assertions.assertNotNull(getInputValue("input[name='date_of_birth']"));
+            Assertions.assertNotNull(getInputValue("input#id_contact-0-value"));
+            Assertions.assertNotNull(getInputValue("input#id_contact-1-value"));
+            Assertions.assertNotNull(getInputValue("input[name='id_company']"));
+            Assertions.assertNotNull(getInputValue("input[name='id_work']"));
 
-        PersonalInfoPage personalInfoPage = new PersonalInfoPage(driver);
+            // Проверка заполненности других полей, если необходимо
+            // ...
 
-        personalInfoPage.open();
-        personalInfoPage.fillPersonalInfo();
-        personalInfoPage.verifyPersonalInfo();
+            return true;
+        } catch (Exception e) {
+            logger.error("Personal info is not fully filled", e);
+            return false;
+        }
+    }
 
-        driver.quit();
+    public boolean isPersonalInfoCorrect() {
+        try {
+            // Проверка правильности заполнения основных полей
+            Assertions.assertEquals("Елена", getInputValue("input[name='fname']"));
+            Assertions.assertEquals("Elena", getInputValue("input[name='fname_latin']"));
+            Assertions.assertEquals("Козлова", getInputValue("input[name='lname']"));
+            Assertions.assertEquals("Kozlova", getInputValue("input[name='lname_latin']"));
+            Assertions.assertEquals("Елена", getInputValue("input[name='blog_name']"));
+            Assertions.assertEquals("06.10.1984", getInputValue("input[name='date_of_birth']"));
+            Assertions.assertEquals("@ElenaK2326", getInputValue("input#id_contact-0-value"));
+            Assertions.assertEquals("id10022572", getInputValue("input#id_contact-1-value"));
+            Assertions.assertEquals("КСП Московской области", getInputValue("input[name='id_company']"));
+            Assertions.assertEquals("Главный инспектор", getInputValue("input[name='id_work']"));
+
+            // Проверка правильности заполнения других полей, если необходимо
+            // ...
+
+            return true;
+        } catch (Exception e) {
+            logger.error("Personal info is not correct", e);
+            return false;
+        }
     }
 }

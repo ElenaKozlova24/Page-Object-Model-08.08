@@ -1,6 +1,8 @@
 package com.example.otus.page;
 
 import factory.WebDriverFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class PersonalAccountPage {
+    private static final Logger logger = LogManager.getLogger(PersonalAccountPage.class);
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -18,6 +21,7 @@ public class PersonalAccountPage {
     private static final By USER_INFO_ELEMENT = By.cssSelector(".sc-1youhxc-0.dwrtLP");
     private static final By PERSONAL_ACCOUNT_LINK = By.cssSelector("a[href='https://otus.ru/learning']");
     private static final By PERSONAL_INFO_LINK = By.cssSelector("a.nav__item[title='О себе']");
+    private static final By PERSONAL_INFO_PAGE_INDICATOR = By.cssSelector("div.personal-info-page-indicator"); // Пример локатора для проверки страницы
 
     public PersonalAccountPage(WebDriver driver) {
         this.driver = driver;
@@ -55,18 +59,17 @@ public class PersonalAccountPage {
             clickPersonalAccountLink();
             clickPersonalInfoLink();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error navigating to personal info", e);
+            throw new RuntimeException("Error navigating to personal info: " + e.getMessage());
         }
     }
 
-    public static void main(String[] args) {
-        WebDriver driver = WebDriverFactory.createNewDriver("chrome");
-
-        PersonalAccountPage personalAccountPage = new PersonalAccountPage(driver);
-
-        personalAccountPage.open();
-        personalAccountPage.goToPersonalInfo();
-
-        driver.quit();
+    public boolean isOnPersonalInfoPage() {
+        try {
+            WebElement personalInfoPageIndicator = wait.until(ExpectedConditions.visibilityOfElementLocated(PERSONAL_INFO_PAGE_INDICATOR));
+            return personalInfoPageIndicator.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
