@@ -5,21 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.example</groupId>
     <artifactId>TestOtus15.07</artifactId>
-
     <version>1.0-SNAPSHOT</version>
 
-
-
-
     <properties>
-
         <maven.compiler.source>20</maven.compiler.source>
-
         <maven.compiler.target>20</maven.compiler.target>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <EMAIL>4688104@mail.ru</EMAIL>
+        <PASSWORD>Kozlova23</PASSWORD>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
@@ -37,9 +32,7 @@
             <version>2.17.0</version>
         </dependency>
         <dependency>
-
             <groupId>org.junit.jupiter</groupId>
-
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.10.2</version>
             <scope>test</scope>
@@ -47,18 +40,12 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.1</version>
+            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.10.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
@@ -67,14 +54,11 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.36</version>
         </dependency>
-
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>4.22.0</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -88,6 +72,7 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -98,8 +83,8 @@
                     <systemPropertyVariables>
                         <browser>chrome</browser>
                         <main.page>https://otus.ru/</main.page>
-                        <email>test9@gmail.com</email>
-                        <password>vg2hsgL–j7!</password>
+                        <EMAIL>${EMAIL}</EMAIL>
+                        <PASSWORD>${PASSWORD}</PASSWORD>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
