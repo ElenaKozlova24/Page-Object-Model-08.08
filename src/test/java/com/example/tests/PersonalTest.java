@@ -32,52 +32,53 @@ public class PersonalTest {
         properties = new Properties();
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
             if (input == null) {
-                logger.error("Unable to find config.properties");
+                logger.error("Не удалось найти config.properties");
                 return;
             }
             properties.load(input);
         } catch (IOException ex) {
-            logger.error("Error loading properties file", ex);
+            logger.error("Ошибка при загрузке файла свойств", ex);
         }
     }
 
     @ParameterizedTest
     @MethodSource("provideCredentials")
     public void testPersonalInfo(String email, String password) {
-        try {
-            performLogin(email, password);
-            navigateToPersonalInfo();
-            fillPersonalInfo();
-            performLogin(email, password);
-            navigateToPersonalInfo();
-            verifyPersonalInfo();
-        } catch (Exception e) {
-            logger.error("Error during test execution", e);
-        }
+        performLogin(email, password);
+        navigateToPersonalInfo();
+        fillPersonalInfo();
+        clearCookies();
+        performLogin(email, password);
+        navigateToPersonalInfo();
+        verifyPersonalInfo();
     }
 
     private void performLogin(String email, String password) {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.login(email, password);
-        assertTrue(loginPage.isLoggedIn(), "Login failed");
+        assertTrue(loginPage.isLoggedIn(), "Ошибка входа");
     }
 
     private void navigateToPersonalInfo() {
         PersonalAccountPage personalAccountPage = new PersonalAccountPage(driver);
         personalAccountPage.goToPersonalInfo();
-        assertTrue(personalAccountPage.isOnPersonalInfoPage(), "Navigation to personal info page failed");
+        assertTrue(personalAccountPage.isOnPersonalInfoPage(), "Ошибка при переходе к странице личной информации");
     }
 
     private void fillPersonalInfo() {
         PersonalInfoPage personalInfoPage = new PersonalInfoPage(driver);
         personalInfoPage.fillPersonalInfo();
-        assertTrue(personalInfoPage.isPersonalInfoFilled(), "Filling personal info failed");
+        assertTrue(personalInfoPage.isPersonalInfoFilled(), "Ошибка при заполнении личной информации");
     }
 
     private void verifyPersonalInfo() {
         PersonalInfoPage personalInfoPage = new PersonalInfoPage(driver);
-        assertTrue(personalInfoPage.isPersonalInfoCorrect(), "Personal info verification failed");
+        assertTrue(personalInfoPage.isPersonalInfoCorrect(), "Ошибка при проверке личной информации");
+    }
+
+    private void clearCookies() {
+        driver.manage().deleteAllCookies();
     }
 
     @AfterEach
@@ -88,19 +89,12 @@ public class PersonalTest {
     }
 
     private static Stream<Arguments> provideCredentials() {
-        Properties properties = new Properties();
-        try (InputStream input = PersonalTest.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) {
-                logger.error("Unable to find config.properties");
-                return Stream.empty();
-            }
-            properties.load(input);
-        } catch (IOException ex) {
-            logger.error("Error loading properties file", ex);
+        String email = System.getenv("EMAIL");
+        String password = System.getenv("PASSWORD");
+        if (email == null || password == null) {
+            logger.error("Переменные окружения EMAIL и PASSWORD не установлены");
             return Stream.empty();
         }
-        String email = properties.getProperty("email");
-        String password = properties.getProperty("password");
         return Stream.of(
                 Arguments.of(email, password)
         );

@@ -1,6 +1,5 @@
 package com.example.otus.page;
 
-import factory.WebDriverFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -10,23 +9,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.Assertions;
 
-import java.time.Duration;
 
-public class PersonalInfoPage {
-    private static final Logger logger = LogManager.getLogger(PersonalInfoPage.class);
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class PersonalInfoPage extends BasePage {
+    private final Logger logger = LogManager.getLogger(LoginPage.class);
 
     public PersonalInfoPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
-
-    public void open() {
-        driver.get("https://otus.ru/");
+        super(driver);
     }
 
     public void fillPersonalInfo() {
@@ -211,7 +201,7 @@ public class PersonalInfoPage {
 
     public boolean isPersonalInfoCorrect() {
         try {
-            // Проверка правильности заполнения основных полей
+            // Проверка правильности запоиииииилнения основных полей
             Assertions.assertEquals("Елена", getInputValue("input[name='fname']"));
             Assertions.assertEquals("Elena", getInputValue("input[name='fname_latin']"));
             Assertions.assertEquals("Козлова", getInputValue("input[name='lname']"));

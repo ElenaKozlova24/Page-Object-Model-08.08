@@ -1,35 +1,24 @@
 package com.example.otus.page;
 
-import factory.WebDriverFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
-public class PersonalAccountPage {
-    private static final Logger logger = LogManager.getLogger(PersonalAccountPage.class);
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class PersonalAccountPage extends BasePage {
+    private final Logger logger = LogManager.getLogger(PersonalAccountPage.class);
 
     // Локаторы
-    private static final By PERSONAL_AREA_ELEMENT = By.cssSelector("div.hGvqzc");
-    private static final By USER_INFO_ELEMENT = By.cssSelector(".sc-1youhxc-0.dwrtLP");
-    private static final By PERSONAL_ACCOUNT_LINK = By.cssSelector("a[href='https://otus.ru/learning']");
-    private static final By PERSONAL_INFO_LINK = By.cssSelector("a.nav__item[title='О себе']");
-    private static final By PERSONAL_INFO_PAGE_INDICATOR = By.cssSelector("div.personal-info-page-indicator"); // Пример локатора для проверки страницы
+    private final By PERSONAL_AREA_ELEMENT = By.cssSelector("div.hGvqzc");
+    private final By USER_INFO_ELEMENT = By.cssSelector(".sc-1youhxc-0.dwrtLP");
+    private final By PERSONAL_ACCOUNT_LINK = By.cssSelector("a[href='https://otus.ru/learning']");
+    private final By PERSONAL_INFO_LINK = By.cssSelector("a.nav__item[title='О себе']");
+    private final By PERSONAL_INFO_PAGE_INDICATOR = By.cssSelector("div.personal-info-page-indicator"); // Пример локатора для проверки страницы
 
     public PersonalAccountPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
-
-    public void open() {
-        driver.get("https://otus.ru/");
+        super(driver);
     }
 
     public void clickPersonalAreaElement() {
@@ -59,8 +48,8 @@ public class PersonalAccountPage {
             clickPersonalAccountLink();
             clickPersonalInfoLink();
         } catch (Exception e) {
-            logger.error("Error navigating to personal info", e);
-            throw new RuntimeException("Error navigating to personal info: " + e.getMessage());
+            logger.error("Ошибка при переходе к личной информации", e);
+            throw new RuntimeException("Ошибка при переходе к личной информации: " + e.getMessage());
         }
     }
 

@@ -1,37 +1,26 @@
 package com.example.otus.page;
 
-import factory.WebDriverFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
-public class LoginPage {
-    private static final Logger logger = LogManager.getLogger(LoginPage.class);
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class LoginPage extends BasePage {
+    private final Logger logger = LogManager.getLogger(LoginPage.class);
 
     // Локаторы
-    private static final By LOGIN_BUTTON = By.cssSelector("button.sc-mrx253-0");
-    private static final By PERSONAL_AREA_ELEMENT = By.cssSelector("div.hGvqzc");
-    private static final By EMAIL_INPUT = By.cssSelector("input[name='email']");
-    private static final By PASSWORD_ELEMENT = By.cssSelector(".sc-11ptd2v-1-Component");
-    private static final By PASSWORD_INPUT = By.cssSelector("input[type='password']");
-    private static final By LOGIN_SUBMIT_BUTTON = By.cssSelector("button.eQlGvH");
-    private static final By LOGGED_IN_INDICATOR = By.cssSelector("div.logged-in-indicator"); // Пример локатора для проверки входа
+    private final By LOGIN_BUTTON = By.cssSelector("button.sc-mrx253-0");
+    private final By PERSONAL_AREA_ELEMENT = By.cssSelector("div.hGvqzc");
+    private final By EMAIL_INPUT = By.cssSelector("input[name='email']");
+    private final By PASSWORD_ELEMENT = By.cssSelector(".sc-11ptd2v-1-Component");
+    private final By PASSWORD_INPUT = By.cssSelector("input[type='password']");
+    private final By LOGIN_SUBMIT_BUTTON = By.cssSelector("button.eQlGvH");
+    private final By LOGGED_IN_INDICATOR = By.cssSelector("div.logged-in-indicator"); // Пример локатора для проверки входа
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
-
-    public void open() {
-        driver.get("https://otus.ru/");
+        super(driver);
     }
 
     public void clickLoginButton() {
@@ -70,8 +59,8 @@ public class LoginPage {
             enterPassword(password);
             clickLoginSubmitButton();
         } catch (Exception e) {
-            logger.error("Login failed", e);
-            throw new RuntimeException("Login failed: " + e.getMessage());
+            logger.error("Ошибка входа", e);
+            throw new RuntimeException("Ошибка входа: " + e.getMessage());
         }
     }
 
