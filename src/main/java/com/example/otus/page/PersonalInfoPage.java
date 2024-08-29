@@ -11,9 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.junit.jupiter.api.Assertions;
 
-
 public class PersonalInfoPage extends BasePage {
-    private final Logger logger = LogManager.getLogger(LoginPage.class);
+    private final Logger logger = LogManager.getLogger(PersonalInfoPage.class);
 
     public PersonalInfoPage(WebDriver driver) {
         super(driver);
@@ -201,7 +200,7 @@ public class PersonalInfoPage extends BasePage {
 
     public boolean isPersonalInfoCorrect() {
         try {
-            // Проверка правильности запоиииииилнения основных полей
+            // Проверка правильности запоииииилнения основных полей
             Assertions.assertEquals("Елена", getInputValue("input[name='fname']"));
             Assertions.assertEquals("Elena", getInputValue("input[name='fname_latin']"));
             Assertions.assertEquals("Козлова", getInputValue("input[name='lname']"));
