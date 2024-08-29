@@ -80,12 +80,10 @@ public class PersonalInfoPage extends BasePage {
         WebElement addContactElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(String.format(addContactLocatorTemplate, "Добавить"))));
         addContactElement.click();
 
-        // Локатор для выбора метода контакта
         By setMethodLocator = By.xpath("(//span[@class='placeholder']) [last()]");
         WebElement setMethodElement = wait.until(ExpectedConditions.presenceOfElementLocated(setMethodLocator));
         setMethodElement.click();
 
-        // Локатор для выбора Telegram
         String socialNetLocatorTemplate = "(//button[@data-value='%s']) [last()]";
         WebElement telegramElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(String.format(socialNetLocatorTemplate, "telegram"))));
         telegramElement.click();
@@ -101,17 +99,14 @@ public class PersonalInfoPage extends BasePage {
         WebElement addContactElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(String.format(addContactLocatorTemplate, "Добавить"))));
         addContactElement.click();
 
-        // Локатор для выбора метода контакта
         By setMethodLocator = By.xpath("(//span[@class='placeholder']) [last()]");
         WebElement setMethodElement = wait.until(ExpectedConditions.presenceOfElementLocated(setMethodLocator));
         setMethodElement.click();
 
-        // Локатор для выбора VK
         String socialNetLocatorTemplate = "(//button[@data-value='%s']) [last()]";
         WebElement vkElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(String.format(socialNetLocatorTemplate, "vk"))));
         vkElement.click();
 
-        // Локатор для поля ввода контакта
         String fieldSelectorTemplate = "input#id_contact-%d-value";
         WebElement vkInputElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(String.format(fieldSelectorTemplate, 1))));
         vkInputElement.click();
@@ -176,7 +171,6 @@ public class PersonalInfoPage extends BasePage {
 
     public boolean isPersonalInfoFilled() {
         try {
-            // Проверка заполненности основных полей
             Assertions.assertNotNull(getInputValue("input[name='fname']"));
             Assertions.assertNotNull(getInputValue("input[name='fname_latin']"));
             Assertions.assertNotNull(getInputValue("input[name='lname']"));
@@ -188,9 +182,6 @@ public class PersonalInfoPage extends BasePage {
             Assertions.assertNotNull(getInputValue("input[name='id_company']"));
             Assertions.assertNotNull(getInputValue("input[name='id_work']"));
 
-            // Проверка заполненности других полей, если необходимо
-            // ...
-
             return true;
         } catch (Exception e) {
             logger.error("Personal info is not fully filled", e);
@@ -200,7 +191,6 @@ public class PersonalInfoPage extends BasePage {
 
     public boolean isPersonalInfoCorrect() {
         try {
-            // Проверка правильности запоииииилнения основных полей
             Assertions.assertEquals("Елена", getInputValue("input[name='fname']"));
             Assertions.assertEquals("Elena", getInputValue("input[name='fname_latin']"));
             Assertions.assertEquals("Козлова", getInputValue("input[name='lname']"));
@@ -211,9 +201,6 @@ public class PersonalInfoPage extends BasePage {
             Assertions.assertEquals("id10022572", getInputValue("input#id_contact-1-value"));
             Assertions.assertEquals("КСП Московской области", getInputValue("input[name='id_company']"));
             Assertions.assertEquals("Главный инспектор", getInputValue("input[name='id_work']"));
-
-            // Проверка правильности заполнения других полей, если необходимо
-            // ...
 
             return true;
         } catch (Exception e) {

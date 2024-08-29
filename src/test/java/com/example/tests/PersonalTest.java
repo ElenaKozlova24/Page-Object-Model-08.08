@@ -24,6 +24,8 @@ public class PersonalTest {
 
     @BeforeEach
     public void setUp() {
+        // Устанавливаем версию ChromeDriver, если нужно переопределить значение по умолчанию
+        System.setProperty("chrome.driver.version", "126.0.6478.126");
         driver = WebDriverFactory.createNewDriver("chrome");
     }
 
@@ -66,7 +68,7 @@ public class PersonalTest {
         assertTrue(personalInfoPage.isPersonalInfoFilled(), "Ошибка при заполнении личной информации");
     }
 
-    private void verifyPersonalInfo() {
+    public void verifyPersonalInfo() {
         PersonalInfoPage personalInfoPage = new PersonalInfoPage(driver);
         assertTrue(personalInfoPage.isPersonalInfoCorrect(), "Ошибка при проверке личной информации");
     }

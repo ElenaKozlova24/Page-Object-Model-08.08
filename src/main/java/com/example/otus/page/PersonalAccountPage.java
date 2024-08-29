@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class PersonalAccountPage extends BasePage {
     private final Logger logger = LogManager.getLogger(PersonalAccountPage.class);
 
-    // Локаторы
     private final By PERSONAL_AREA_ELEMENT = By.cssSelector("div.hGvqzc");
     private final By USER_INFO_ELEMENT = By.cssSelector(".sc-1youhxc-0.dwrtLP");
     private final By PERSONAL_ACCOUNT_LINK = By.cssSelector("a[href='https://otus.ru/learning']");

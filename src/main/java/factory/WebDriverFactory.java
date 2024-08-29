@@ -8,17 +8,15 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class WebDriverFactory {
-    private static final String DEFAULT_CHROME_DRIVER_VERSION = "114.0.5735.90"; // Пример версии ChromeDriver
+    private static final String DEFAULT_CHROME_DRIVER_VERSION = "126.0.6478.126";
 
     static {
-        // Задаем значение по умолчанию для системного свойства
         if (System.getProperty("chrome.driver.version") == null) {
             System.setProperty("chrome.driver.version", DEFAULT_CHROME_DRIVER_VERSION);
         }
     }
 
     public static WebDriver createNewDriver(String webDriverName, Object... options) {
-        // Получаем версию драйвера из системного свойства
         String chromeDriverVersion = System.getProperty("chrome.driver.version");
 
         switch (webDriverName.toLowerCase()) {
